@@ -68,11 +68,14 @@ class BookCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           children: [
-            Image.network(
-                "https://covers.openlibrary.org/b/isbn/9780857197689-L.jpg"),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12.0),
+              child: Image.network(
+                  "https://covers.openlibrary.org/b/isbn/9780857197689-L.jpg"),
+            ),
             Text(title),
             Text(authors.length > 1 ? authors.join(', ') : authors[0]),
           ],
