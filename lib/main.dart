@@ -19,8 +19,16 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+      theme: ThemeData.dark().copyWith(
+        scaffoldBackgroundColor: CustomColors.charcoal,
+        cardColor: CustomColors.independence,
+        colorScheme: ThemeData.dark().colorScheme.copyWith(
+              primary: CustomColors.chocolateWeb,
+              secondary: CustomColors.bigDipOruby,
+            ),
+        appBarTheme: const AppBarTheme(
+          color: CustomColors.independence,
+        ),
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
@@ -59,13 +67,16 @@ class BookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      child: Column(
-        children: [
-          Image.network(
-              "https://covers.openlibrary.org/b/isbn/9780857197689-L.jpg"),
-          Text(title),
-          Text(authors.length > 1 ? authors.join(', ') : authors[0]),
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          children: [
+            Image.network(
+                "https://covers.openlibrary.org/b/isbn/9780857197689-L.jpg"),
+            Text(title),
+            Text(authors.length > 1 ? authors.join(', ') : authors[0]),
+          ],
+        ),
       ),
     );
   }
