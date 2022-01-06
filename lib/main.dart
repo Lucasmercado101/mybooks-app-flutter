@@ -85,7 +85,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Library',
       theme: ThemeData.dark().copyWith(
         scaffoldBackgroundColor: CustomColors.charcoal,
         cardColor: CustomColors.independence,
@@ -97,7 +97,7 @@ class MyApp extends StatelessWidget {
           color: CustomColors.independence,
         ),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'All books'),
     );
   }
 }
@@ -139,10 +139,10 @@ class BookCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(maxHeight: 400),
+      constraints: const BoxConstraints(maxHeight: 450),
       child: Card(
         child: Padding(
-          padding: const EdgeInsets.all(12.0),
+          padding: const EdgeInsets.fromLTRB(24.0, 12.0, 24.0, 12.0),
           child: Column(
             children: [
               Expanded(
@@ -152,12 +152,21 @@ class BookCard extends StatelessWidget {
                       "https://covers.openlibrary.org/b/isbn/9780857197689-L.jpg"),
                 ),
               ),
+              const SizedBox(height: 8.0),
               Text(
                 title,
                 style: TextStyle(
-                    fontSize: Theme.of(context).textTheme.headline5?.fontSize),
+                    fontSize: Theme.of(context).textTheme.headline5?.fontSize,
+                    color: CustomColors.lightYellow),
               ),
-              Text(authors.length > 1 ? authors.join(', ') : authors[0]),
+              const SizedBox(height: 8.0),
+              Text(
+                authors.length > 1 ? authors.join(', ') : authors[0],
+                style: TextStyle(
+                  fontSize: Theme.of(context).textTheme.subtitle1?.fontSize,
+                  color: CustomColors.lightYellow,
+                ),
+              ),
             ],
           ),
         ),
