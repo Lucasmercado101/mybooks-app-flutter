@@ -8,6 +8,73 @@ class CustomColors {
   static const Color bigDipOruby = Color(0xFFA62646);
 }
 
+const dummyBooks = [
+  {
+    'title': 'The Alchemist',
+    'author': ['Paulo Coelho'],
+  },
+  {
+    'title': 'Harry Potter and the Sorcerer\'s Stone',
+    'author': ['J.K. Rowling'],
+  },
+  {
+    'title': 'The Lord of the Rings',
+    'author': ['J.R.R. Tolkien'],
+  },
+  {
+    'title': 'The Hobbit',
+    'author': ['J.R.R. Tolkien'],
+  },
+  {
+    'title': 'Where the Sidewalk Ends',
+    'author': ['Shel Silverstein'],
+  },
+  {
+    'title': 'The Catcher in the Rye',
+    'author': ['J.D. Salinger'],
+  },
+  {
+    'title': 'The Great Gatsby',
+    'author': ['F. Scott Fitzgerald'],
+  },
+  {
+    'title': 'The Grapes of Wrath',
+    'author': ['John Steinbeck'],
+  },
+  {
+    'title': 'The Lion, the Witch and the Wardrobe',
+    'author': ['C.S. Lewis'],
+  },
+  {
+    'title': 'The Lord of the Rings',
+    'author': ['J.R.R. Tolkien'],
+  },
+  {
+    'title': 'The Hobbit',
+    'author': ['J.R.R. Tolkien'],
+  },
+  {
+    'title': 'Where the Sidewalk Ends',
+    'author': ['Shel Silverstein'],
+  },
+  {
+    'title': 'The Catcher in the Rye',
+    'author': ['J.D. Salinger'],
+  },
+  {
+    'title': 'The Great Gatsby',
+    'author': ['F. Scott Fitzgerald'],
+  },
+  {
+    'title': 'The Grapes of Wrath',
+    'author': ['John Steinbeck'],
+  },
+  {
+    'title': 'The Lion, the Witch and the Wardrobe',
+    'author': ['C.S. Lewis'],
+  },
+];
+
 void main() {
   runApp(const MyApp());
 }
@@ -51,34 +118,48 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: BookCard(
-          title: 'The Psychology of Money', authors: const ['Morgan Housel']),
+      body: Padding(
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+        child: ListView.builder(
+            itemBuilder: (context, index) => BookCard(
+                title: dummyBooks[index]['title'] as String,
+                authors: dummyBooks[index]['author'] as List<String>)),
+      ),
     );
   }
 }
 
 class BookCard extends StatelessWidget {
-  String title;
-  List<String> authors;
+  final String title;
+  final List<String> authors;
 
-  BookCard({Key? key, required this.title, required this.authors})
+  const BookCard({Key? key, required this.title, required this.authors})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Column(
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12.0),
-              child: Image.network(
-                  "https://covers.openlibrary.org/b/isbn/9780857197689-L.jpg"),
-            ),
-            Text(title),
-            Text(authors.length > 1 ? authors.join(', ') : authors[0]),
-          ],
+    return Container(
+      constraints: const BoxConstraints(maxHeight: 400),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              Expanded(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(12.0),
+                  child: Image.network(
+                      "https://covers.openlibrary.org/b/isbn/9780857197689-L.jpg"),
+                ),
+              ),
+              Text(
+                title,
+                style: TextStyle(
+                    fontSize: Theme.of(context).textTheme.headline5?.fontSize),
+              ),
+              Text(authors.length > 1 ? authors.join(', ') : authors[0]),
+            ],
+          ),
         ),
       ),
     );
@@ -86,5 +167,3 @@ class BookCard extends StatelessWidget {
 }
 
 // 30404f,3e4c65,f2f5d5,d16821,a62646
-
-
