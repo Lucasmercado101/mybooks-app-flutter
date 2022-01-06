@@ -1,5 +1,13 @@
 import 'package:flutter/material.dart';
 
+class CustomColors {
+  static const Color charcoal = Color(0xFF30404F);
+  static const Color independence = Color(0xFF3E4C65);
+  static const Color lightYellow = Color(0xFFF2F5D5);
+  static const Color chocolateWeb = Color(0xFFD16821);
+  static const Color bigDipOruby = Color(0xFFA62646);
+}
+
 void main() {
   runApp(const MyApp());
 }
@@ -65,3 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+// 30404f,3e4c65,f2f5d5,d16821,a62646
+
+
