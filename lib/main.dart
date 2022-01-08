@@ -27,6 +27,10 @@ class MyApp extends StatelessWidget {
               primary: CustomColors.chocolateWeb,
               secondary: CustomColors.bigDipOruby,
             ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: CustomColors.bigDipOruby,
+          foregroundColor: CustomColors.lightYellow,
+        ),
         appBarTheme: const AppBarTheme(
           color: CustomColors.independence,
         ),
@@ -52,19 +56,26 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      // body:
-      // Padding(
-      //   padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-      //   child: ListView.builder(
-      //     itemBuilder: (context, index) => BookCard(
-      //         title: dummyBooks[index]['title'] as String,
-      //         authors: dummyBooks[index]['author'] as List<String>),
-      //   ),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () => {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => Scaffold()),
+          ),
+        },
+      ), // body:
     );
   }
 }
 
+//   padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+//   child: ListView.builder(
+//     itemBuilder: (context, index) => BookCard(
+//         title: dummyBooks[index]['title'] as String,
+//         authors: dummyBooks[index]['author'] as List<String>),
+//   ),
+// ),
 class BookCard extends StatelessWidget {
   final Book data;
 
