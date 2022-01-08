@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:library_app/models/book.dart';
 
 class CustomColors {
   static const Color charcoal = Color(0xFF30404F);
@@ -7,73 +8,6 @@ class CustomColors {
   static const Color chocolateWeb = Color(0xFFD16821);
   static const Color bigDipOruby = Color(0xFFA62646);
 }
-
-const dummyBooks = [
-  {
-    'title': 'The Alchemist',
-    'author': ['Paulo Coelho'],
-  },
-  {
-    'title': 'Harry Potter and the Sorcerer\'s Stone',
-    'author': ['J.K. Rowling'],
-  },
-  {
-    'title': 'The Lord of the Rings',
-    'author': ['J.R.R. Tolkien'],
-  },
-  {
-    'title': 'The Hobbit',
-    'author': ['J.R.R. Tolkien'],
-  },
-  {
-    'title': 'Where the Sidewalk Ends',
-    'author': ['Shel Silverstein'],
-  },
-  {
-    'title': 'The Catcher in the Rye',
-    'author': ['J.D. Salinger'],
-  },
-  {
-    'title': 'The Great Gatsby',
-    'author': ['F. Scott Fitzgerald'],
-  },
-  {
-    'title': 'The Grapes of Wrath',
-    'author': ['John Steinbeck'],
-  },
-  {
-    'title': 'The Lion, the Witch and the Wardrobe',
-    'author': ['C.S. Lewis'],
-  },
-  {
-    'title': 'The Lord of the Rings',
-    'author': ['J.R.R. Tolkien'],
-  },
-  {
-    'title': 'The Hobbit',
-    'author': ['J.R.R. Tolkien'],
-  },
-  {
-    'title': 'Where the Sidewalk Ends',
-    'author': ['Shel Silverstein'],
-  },
-  {
-    'title': 'The Catcher in the Rye',
-    'author': ['J.D. Salinger'],
-  },
-  {
-    'title': 'The Great Gatsby',
-    'author': ['F. Scott Fitzgerald'],
-  },
-  {
-    'title': 'The Grapes of Wrath',
-    'author': ['John Steinbeck'],
-  },
-  {
-    'title': 'The Lion, the Witch and the Wardrobe',
-    'author': ['C.S. Lewis'],
-  },
-];
 
 void main() {
   runApp(const MyApp());
@@ -118,26 +52,29 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Padding(
-        padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-        child: ListView.builder(
-            itemBuilder: (context, index) => BookCard(
-                title: dummyBooks[index]['title'] as String,
-                authors: dummyBooks[index]['author'] as List<String>)),
-      ),
+      // body:
+      // Padding(
+      //   padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+      //   child: ListView.builder(
+      //     itemBuilder: (context, index) => BookCard(
+      //         title: dummyBooks[index]['title'] as String,
+      //         authors: dummyBooks[index]['author'] as List<String>),
+      //   ),
+      // ),
     );
   }
 }
 
 class BookCard extends StatelessWidget {
-  final String title;
-  final List<String> authors;
+  final Book data;
 
-  const BookCard({Key? key, required this.title, required this.authors})
-      : super(key: key);
+  const BookCard({Key? key, required this.data}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    String authorsString =
+        data.authors.length > 1 ? data.authors.join(', ') : data.authors[0];
+
     return Container(
       constraints: const BoxConstraints(maxHeight: 450),
       child: Card(
@@ -148,20 +85,19 @@ class BookCard extends StatelessWidget {
               Expanded(
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12.0),
-                  child: Image.network(
-                      "https://covers.openlibrary.org/b/isbn/9780857197689-L.jpg"),
+                  child: Image.network(data.imageUrl),
                 ),
               ),
               const SizedBox(height: 8.0),
               Text(
-                title,
+                data.title,
                 style: TextStyle(
                     fontSize: Theme.of(context).textTheme.headline5?.fontSize,
                     color: CustomColors.lightYellow),
               ),
               const SizedBox(height: 8.0),
               Text(
-                authors.length > 1 ? authors.join(', ') : authors[0],
+                authorsString,
                 style: TextStyle(
                   fontSize: Theme.of(context).textTheme.subtitle1?.fontSize,
                   color: CustomColors.lightYellow,
@@ -174,5 +110,3 @@ class BookCard extends StatelessWidget {
     );
   }
 }
-
-// 30404f,3e4c65,f2f5d5,d16821,a62646
