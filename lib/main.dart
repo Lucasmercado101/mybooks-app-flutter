@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:library_app/models/book.dart';
+import 'package:fluro/fluro.dart';
+import 'package:library_app/Router/routes.dart';
+import 'package:library_app/Router/router.dart';
 
 class CustomColors {
   static const Color charcoal = Color(0xFF30404F);
@@ -13,8 +15,19 @@ void main() {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  _MyAppState() {
+    final router = FluroRouter();
+    Routes.configureRoutes(router);
+    Application.router = router;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,89 +48,7 @@ class MyApp extends StatelessWidget {
           color: CustomColors.independence,
         ),
       ),
-      home: const MyHomePage(title: 'All books'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.add),
-        onPressed: () => {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => Scaffold()),
-          ),
-        },
-      ), // body:
-    );
-  }
-}
-
-//   padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-//   child: ListView.builder(
-//     itemBuilder: (context, index) => BookCard(
-//         title: dummyBooks[index]['title'] as String,
-//         authors: dummyBooks[index]['author'] as List<String>),
-//   ),
-// ),
-class BookCard extends StatelessWidget {
-  final Book data;
-
-  const BookCard({Key? key, required this.data}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    String authorsString =
-        data.authors.length > 1 ? data.authors.join(', ') : data.authors[0];
-
-    return Container(
-      constraints: const BoxConstraints(maxHeight: 450),
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24.0, 12.0, 24.0, 12.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12.0),
-                  child: Image.network(data.imageUrl),
-                ),
-              ),
-              const SizedBox(height: 8.0),
-              Text(
-                data.title,
-                style: TextStyle(
-                    fontSize: Theme.of(context).textTheme.headline5?.fontSize,
-                    color: CustomColors.lightYellow),
-              ),
-              const SizedBox(height: 8.0),
-              Text(
-                authorsString,
-                style: TextStyle(
-                  fontSize: Theme.of(context).textTheme.subtitle1?.fontSize,
-                  color: CustomColors.lightYellow,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      onGenerateRoute: Application.router.generator,
     );
   }
 }
