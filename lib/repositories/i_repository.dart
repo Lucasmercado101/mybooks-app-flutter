@@ -1,9 +1,9 @@
-abstract class Repository<T, ID> {
-  Future<List<T>> getAll();
+abstract class Repository<T, New, ID> {
+  getAll();
 
-  Future<T> getById(ID id);
+  getById(ID id);
 
-  Future<ID> insert(T entity);
+  Future<ID> insert(New entity);
 
   Future<ID> update(T entity);
 

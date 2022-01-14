@@ -1,9 +1,10 @@
+import 'package:library_app/db/models/new_book.dart';
 import 'package:library_app/models/book.dart';
 import 'package:library_app/repositories/i_repository.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-class SQLBookRepository extends Repository<Book, int> {
+class SQLBookRepository extends Repository<Book, NewBook, int> {
   final Database _db;
 
   SQLBookRepository._(this._db);
@@ -47,7 +48,7 @@ class SQLBookRepository extends Repository<Book, int> {
   }
 
   @override
-  Future<int> insert(Book entity) {
+  Future<int> insert(NewBook entity) async {
     return _db.insert('books', entity.toMap());
   }
 

@@ -39,20 +39,20 @@ class _NewBookState extends State<NewBookPage> {
                   _title = value;
                 },
               ),
-              TextFormField(
-                decoration: const InputDecoration(
-                  labelText: "Author",
-                ),
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Please enter some text';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _title = value;
-                },
-              ),
+              // TextFormField(
+              //   decoration: const InputDecoration(
+              //     labelText: "Author",
+              //   ),
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return 'Please enter some text';
+              //     }
+              //     return null;
+              //   },
+              //   onSaved: (value) {
+              //     _title = value;
+              //   },
+              // ),
               TextFormField(
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
