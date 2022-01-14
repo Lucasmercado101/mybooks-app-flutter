@@ -43,8 +43,8 @@ class BookCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String authorsString =
-        data.authors.length > 1 ? data.authors.join(', ') : data.authors[0];
+    // String authorsString =
+    //     data.authors.length > 1 ? data.authors.join(', ') : data.authors[0];
 
     return Container(
       constraints: const BoxConstraints(maxHeight: 450),
@@ -53,12 +53,12 @@ class BookCard extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(24.0, 12.0, 24.0, 12.0),
           child: Column(
             children: [
-              Expanded(
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(12.0),
-                  child: Image.network(data.imageUrl),
-                ),
-              ),
+              // Expanded(
+              //   child: ClipRRect(
+              //     borderRadius: BorderRadius.circular(12.0),
+              //     child: Image.network(data.imageUrl),
+              //   ),
+              // ),
               const SizedBox(height: 8.0),
               Text(
                 data.title,
@@ -67,13 +67,13 @@ class BookCard extends StatelessWidget {
                     color: Theme.of(context).textTheme.headline1?.color),
               ),
               const SizedBox(height: 8.0),
-              Text(
-                authorsString,
-                style: TextStyle(
-                  fontSize: Theme.of(context).textTheme.subtitle1?.fontSize,
-                  color: Theme.of(context).textTheme.headline1?.color,
-                ),
-              ),
+              // Text(
+              //   authorsString,
+              //   style: TextStyle(
+              //     fontSize: Theme.of(context).textTheme.subtitle1?.fontSize,
+              //     color: Theme.of(context).textTheme.headline1?.color,
+              //   ),
+              // ),
             ],
           ),
         ),
