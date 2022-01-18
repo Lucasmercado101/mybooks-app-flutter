@@ -9,7 +9,7 @@ import 'package:library_app/repositories/i_repository.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-final booksRepositoryProvider = FutureProvider<Repository>((ref) async {
+final booksRepositoryProvider = FutureProvider<SQLBookRepository>((ref) async {
   return SQLBookRepository(
     await openDatabase(
       // Set the path to the database. Note: Using the `join` function from the
@@ -40,12 +40,44 @@ class MyHomePage extends ConsumerStatefulWidget {
 class _MyHomePageState extends ConsumerState<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    AsyncValue<Repository> booksRepository = ref.watch(booksRepositoryProvider);
+    AsyncValue<SQLBookRepository> booksRepository =
+        ref.watch(booksRepositoryProvider);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),
       ),
+      body: Padding(
+          padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
+          child: booksRepository.when(
+            data: (rep) => FutureBuilder<List<Book>>(
+              future: rep.getAll(),
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  List<Book> data = snapshot.data!;
+                  return ListView.builder(
+                    itemCount: data.length,
+                    itemBuilder: (context, index) {
+                      return BookCard(data: data[index]);
+                    },
+                  );
+                } else {
+                  return const Center(
+                    child: CircularProgressIndicator(color: Colors.blue),
+                  );
+                }
+              },
+            ),
+            error: (error, stackTrace) => Text(error.toString()),
+            loading: () => const CircularProgressIndicator(color: Colors.blue),
+          )
+          //  ,
+          //   ((val) => {
+          //   ListView.builder(
+          // //   itemBuilder: (context, index) => BookCard(
+          // // )
+          // })
+          ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
@@ -57,13 +89,6 @@ class _MyHomePageState extends ConsumerState<MyHomePage> {
   }
 }
 
-//   padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 8.0),
-//   child: ListView.builder(
-//     itemBuilder: (context, index) => BookCard(
-//         title: dummyBooks[index]['title'] as String,
-//         authors: dummyBooks[index]['author'] as List<String>),
-//   ),
-// ),
 class BookCard extends StatelessWidget {
   final Book data;
 
