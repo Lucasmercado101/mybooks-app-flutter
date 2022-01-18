@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:library_app/Router/routes.dart';
 import 'package:library_app/Router/router.dart';
 import 'package:library_app/repositories/book_repository.dart';
@@ -15,7 +16,7 @@ class CustomColors {
 }
 
 void main() async {
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatefulWidget {
@@ -30,7 +31,6 @@ class _MyAppState extends State<MyApp> {
     final router = FluroRouter();
     Routes.configureRoutes(router);
     Application.router = router;
-    SQLBookRepository.init();
   }
 
   @override

@@ -1,19 +1,49 @@
 import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:library_app/Router/Routes.dart';
 import 'package:library_app/Router/router.dart';
 import 'package:library_app/models/book.dart';
+import 'package:library_app/repositories/book_repository.dart';
+import 'package:library_app/repositories/i_repository.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
-class MyHomePage extends StatefulWidget {
+final booksRepositoryProvider = FutureProvider<Repository>((ref) async {
+  return SQLBookRepository(
+    await openDatabase(
+      // Set the path to the database. Note: Using the `join` function from the
+      // `path` package is best practice to ensure the path is correctly
+      // constructed for each platform.
+      join(await getDatabasesPath(), 'books_read_app.db'),
+      singleInstance: true,
+      onCreate: (db, version) {
+        // Run the CREATE TABLE statement on the database.
+        return db.execute(
+          'CREATE TABLE books(id INTEGER PRIMARY KEY, title, pages)',
+        );
+      },
+      // Set the version. This executes the onCreate function and provides a
+      // path to perform database upgrades and downgrades.
+      version: 1,
+    ),
+  );
+});
+
+class MyHomePage extends ConsumerStatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyHomePageState extends ConsumerState<MyHomePage> {
   @override
   Widget build(BuildContext context) {
+    var booksRepository = ref.watch(booksRepositoryProvider).value;
+
+    // booksRepository?.getAll().then((value) => print(value[0]!.title));
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("Home"),

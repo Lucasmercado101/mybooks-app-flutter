@@ -1,20 +1,50 @@
 import "package:flutter/material.dart";
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:library_app/db/models/new_book.dart';
+import 'package:library_app/repositories/book_repository.dart';
+import 'package:library_app/repositories/i_repository.dart';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
 
-class NewBookPage extends StatefulWidget {
+final booksRepositoryProvider = FutureProvider<Repository>((ref) async {
+  return SQLBookRepository(
+    await openDatabase(
+      // Set the path to the database. Note: Using the `join` function from the
+      // `path` package is best practice to ensure the path is correctly
+      // constructed for each platform.
+      join(await getDatabasesPath(), 'books_read_app.db'),
+      singleInstance: true,
+      onCreate: (db, version) {
+        // Run the CREATE TABLE statement on the database.
+        return db.execute(
+          'CREATE TABLE books(id INTEGER PRIMARY KEY, title, pages)',
+        );
+      },
+      // Set the version. This executes the onCreate function and provides a
+      // path to perform database upgrades and downgrades.
+      version: 1,
+    ),
+  );
+});
+
+class NewBookPage extends ConsumerStatefulWidget {
   const NewBookPage({Key? key}) : super(key: key);
 
   @override
   _NewBookState createState() => _NewBookState();
 }
 
-class _NewBookState extends State<NewBookPage> {
-  String? _title;
+class _NewBookState extends ConsumerState<NewBookPage> {
+  String _title = "";
+  String _pages = "";
 
   final _formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    var booksRepository = ref.watch(booksRepositoryProvider).value;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text("New Book"),
@@ -35,7 +65,7 @@ class _NewBookState extends State<NewBookPage> {
                   }
                   return null;
                 },
-                onSaved: (value) {
+                onChanged: (value) {
                   _title = value;
                 },
               ),
@@ -65,14 +95,17 @@ class _NewBookState extends State<NewBookPage> {
                   }
                   return null;
                 },
-                onSaved: (value) {
-                  _title = value;
+                onChanged: (value) {
+                  _pages = value;
                 },
               ),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    // TODO: Add new book and save
+                    booksRepository!.insert(NewBook(
+                      title: _title,
+                      pages: int.parse(_pages),
+                    ));
                   }
                 },
                 child: const Text('Submit'),
