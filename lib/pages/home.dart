@@ -40,9 +40,7 @@ class MyHomePage extends ConsumerStatefulWidget {
 class _MyHomePageState extends ConsumerState<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    var booksRepository = ref.watch(booksRepositoryProvider).value;
-
-    // booksRepository?.getAll().then((value) => print(value[0]!.title));
+    AsyncValue<Repository> booksRepository = ref.watch(booksRepositoryProvider);
 
     return Scaffold(
       appBar: AppBar(
