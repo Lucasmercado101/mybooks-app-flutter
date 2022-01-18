@@ -20,7 +20,14 @@ final booksRepositoryProvider = FutureProvider<SQLBookRepository>((ref) async {
       onCreate: (db, version) {
         // Run the CREATE TABLE statement on the database.
         return db.execute(
-          'CREATE TABLE books(id INTEGER PRIMARY KEY, title, pages)',
+          """CREATE TABLE books(id INTEGER PRIMARY KEY, title, pages, image_id);
+          CREATE TABLE 
+          images(
+            id INTEGER PRIMARY KEY,
+            mime_type TEXT,
+            title TEXT, 
+            data BLOB);
+          """,
         );
       },
       // Set the version. This executes the onCreate function and provides a

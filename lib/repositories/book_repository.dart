@@ -32,8 +32,31 @@ class SQLBookRepository extends Repository<Book, NewBook, int> {
   }
 
   @override
-  Future<int> insert(NewBook entity) async {
-    return _database.insert('books', entity.toMap());
+  Future<int> insert(NewBook newBook) async {
+    Map<String, Object> bookMap = {
+      'title': newBook.title,
+      'pages': newBook.pages,
+    };
+
+    int? newBookId;
+
+    if (newBook.image != null) {
+      await _database.transaction((txn) async {
+        var imageData = newBook.image!;
+        Map<String, Object?> imageMap = {
+          'data': imageData.imageData,
+          'mimeType': imageData.mimeType,
+          'title': imageData.title,
+        };
+
+        var imageId = await txn.insert('images', imageMap);
+        bookMap['image_id'] = imageId;
+        newBookId = await txn.insert('books', bookMap);
+      });
+    }
+
+    newBookId = await _database.insert('books', bookMap);
+    return Future.value(newBookId);
   }
 
   @override

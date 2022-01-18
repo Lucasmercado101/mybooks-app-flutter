@@ -37,6 +37,7 @@ dependencies:
   sqflite: ^2.0.2
   path: ^1.8.0
   flutter_riverpod: ^1.0.3
+  image_picker: ^0.8.4+4
 
 dev_dependencies:
   flutter_test:

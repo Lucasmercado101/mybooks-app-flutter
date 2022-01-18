@@ -6,6 +6,7 @@ import 'package:library_app/repositories/book_repository.dart';
 import 'package:library_app/repositories/i_repository.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:image_picker/image_picker.dart';
 
 final booksRepositoryProvider = FutureProvider<Repository>((ref) async {
   return SQLBookRepository(
@@ -18,7 +19,14 @@ final booksRepositoryProvider = FutureProvider<Repository>((ref) async {
       onCreate: (db, version) {
         // Run the CREATE TABLE statement on the database.
         return db.execute(
-          'CREATE TABLE books(id INTEGER PRIMARY KEY, title, pages)',
+          """CREATE TABLE books(id INTEGER PRIMARY KEY, title, pages, image_id);
+          CREATE TABLE 
+          images(
+            id INTEGER PRIMARY KEY,
+            mime_type TEXT,
+            title TEXT, 
+            data BLOB);
+          """,
         );
       },
       // Set the version. This executes the onCreate function and provides a
@@ -38,6 +46,7 @@ class NewBookPage extends ConsumerStatefulWidget {
 class _NewBookState extends ConsumerState<NewBookPage> {
   String _title = "";
   String _pages = "";
+  XFile? _image;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -99,6 +108,13 @@ class _NewBookState extends ConsumerState<NewBookPage> {
                   _pages = value;
                 },
               ),
+              ElevatedButton(
+                  onPressed: () async {
+                    final ImagePicker _picker = ImagePicker();
+                    _image =
+                        await _picker.pickImage(source: ImageSource.gallery);
+                  },
+                  child: const Text("Add Image")),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
